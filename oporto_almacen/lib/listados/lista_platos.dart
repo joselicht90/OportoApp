@@ -2,10 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oporto_almacen/generics/BackgroundContainer.dart';
 import '../helpers/ui_helper.dart';
-import '../helpers/ui_helper.dart';
-import '../helpers/ui_helper.dart';
-import '../helpers/ui_helper.dart';
-import '../helpers/ui_helper.dart';
 
 class ListadoPlatos extends StatefulWidget {
   final AssetImage heroImage;
@@ -24,6 +20,7 @@ class _ListadoPlatosState extends State<ListadoPlatos> {
     List<Widget> items = List<Widget>();
     for (int i = 0; i < 10; i++) {
       items.add(Container(
+        key: new Key(i.toString()),
         margin: const EdgeInsets.all(10.0),
         height: UiHelper.getOrientation(context) == Orientation.portrait
             ? UiHelper.getHeight(context) / 7

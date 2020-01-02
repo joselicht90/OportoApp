@@ -12,6 +12,11 @@ class UiHelper {
   }
 
   static getOrientation(BuildContext context) {
-    return MediaQuery.of(context).orientation;
+    if (MediaQuery.of(context).size.height >
+        MediaQuery.of(context).size.width) {
+      return Orientation.portrait;
+    } else {
+      return Orientation.landscape;
+    }
   }
 }

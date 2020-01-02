@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
+import 'package:oporto_almacen/generics/CustomDrawer.dart';
 import 'package:oporto_almacen/helpers/ui_helper.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:oporto_almacen/generics/BackgroundContainer.dart';
-import 'package:oporto_almacen/listados/lista_platos.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -16,27 +16,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting('es-AR');
+    initializeDateFormatting();
     return Stack(
       children: <Widget>[
         BackgroundContainer(),
         Container(
           width: UiHelper.getWidth(context),
-          child: Image.asset(
-            'assets/images/home_image.jpg',
-            fit: BoxFit.fill,
+          child: ShaderMask(
+            shaderCallback: (rect) {
+              return LinearGradient(
+                begin: Alignment.topCenter,
+                end: Alignment.bottomCenter,
+                colors: [Colors.white, Colors.transparent],
+              ).createShader(Rect.fromLTRB(0, 0, rect.width, rect.height));
+            },
+            blendMode: BlendMode.dstIn,
+            child: Image(
+              image: AssetImage('assets/images/home_image.jpg'),
+              fit: BoxFit.cover,
+            ),
           ),
         ),
         Scaffold(
           backgroundColor: Colors.transparent,
+          drawer: CustomDrawer(),
           appBar: AppBar(
             backgroundColor: Colors.transparent,
             elevation: 0,
-            leading: Image.asset(
-              'assets/icons/menu_icon.png',
-              height: 50,
+            leading: Builder(
+              builder: (context) {
+                return Container(
+                  margin: const EdgeInsets.all(7),
+                  decoration: BoxDecoration(
+                      color: Color(0x50FFFFFF), shape: BoxShape.circle),
+                  child: IconButton(
+                    icon: Image.asset(
+                      'assets/icons/menu_icon.png',
+                    ),
+                    onPressed: () => Scaffold.of(context).openDrawer(),
+                  ),
+                );
+              },
             ),
             title: Container(
+              padding: const EdgeInsets.all(8),
+              margin: const EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(color: Color(0x50FFFFFF)),
               height: AppBar().preferredSize.height,
               child: Image.asset(
                 'assets/icons/oporto_logo.png',
@@ -45,138 +70,139 @@ class _HomePageState extends State<HomePage> {
             ),
             centerTitle: true,
           ),
+          extendBodyBehindAppBar: true,
           body: SingleChildScrollView(
-            child: Column(
-              children: <Widget>[
-                // Align(
-                //   alignment: Alignment.topCenter,
-                //   child: Container(
-                //     height: UiHelper.getWidth(context) / 10,
-                //     child: Image.asset('assets/icons/oporto_logo.png'),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 50,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 800),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: widget,
+            child: SafeArea(
+              child: Column(
+                children: <Widget>[
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Column(
+                    children: AnimationConfiguration.toStaggeredList(
+                      duration: const Duration(milliseconds: 800),
+                      childAnimationBuilder: (widget) => SlideAnimation(
+                        verticalOffset: 50.0,
+                        child: FadeInAnimation(
+                          child: widget,
+                        ),
                       ),
-                    ),
-                    children: [
-                      Container(
-                        width: UiHelper.getWidth(context) / 1.2,
-                        child: Text(
-                          '"Oporto nace desde el entusiasmo de hacerlo simple, rico y agradable. Con la intención de reivindicar platos de nuestra infancia trabajamos sobre recetas originarias con productos frescos y de estación."',
-                          style: GoogleFonts.montserrat(
-                            fontStyle: FontStyle.italic,
-                            fontWeight: FontWeight.w500,
-                            textStyle: TextStyle(
-                              color: Colors.black,
+                      children: [
+                        Container(
+                          width: UiHelper.getWidth(context),
+                          padding: const EdgeInsets.all(8.0),
+                          margin: const EdgeInsets.all(8.0),
+                          decoration: BoxDecoration(
+                              color: Theme.of(context).highlightColor,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: <Widget>[
+                              Text(
+                                '26 de Septiembre - 19:00 hs',
+                                style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize:
+                                          UiHelper.getWidth(context) / 40),
+                                ),
+                              ),
+                              Text(
+                                'Degustación Pinot Noir Argentinos',
+                                style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(
+                                      color: Theme.of(context).accentColor,
+                                      fontSize:
+                                          UiHelper.getWidth(context) / 40),
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        SizedBox(
+                          height: 15,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 5),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'RECOMENDACIONES',
+                              style: GoogleFonts.comfortaa(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: UiHelper.getWidth(context) / 40),
                             ),
                           ),
                         ),
-                      )
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Column(
-                  children: AnimationConfiguration.toStaggeredList(
-                    duration: const Duration(milliseconds: 800),
-                    childAnimationBuilder: (widget) => SlideAnimation(
-                      verticalOffset: 50.0,
-                      child: FadeInAnimation(
-                        child: widget,
-                      ),
+                        CarouselSlider(
+                          initialPage: 0,
+                          viewportFraction: 0.7,
+                          enableInfiniteScroll: false,
+                          height: UiHelper.getOrientation(context) ==
+                                  Orientation.portrait
+                              ? UiHelper.getHeight(context) / 3
+                              : UiHelper.getWidth(context) / 3,
+                          enlargeCenterPage: true,
+                          items: <Widget>[
+                            HomePageCard(
+                              image: AssetImage(
+                                  'assets/images/entradas_image.jpg'),
+                              title: 'Lorem ipsum dolor sit amet',
+                              tag: 'imagen_entradas',
+                            ),
+                            HomePageCard(
+                              image: AssetImage(
+                                  'assets/images/cocktails_image.jpg'),
+                              title: 'Lorem ipsum dolor sit amet',
+                              tag: 'imagen_raciones',
+                            ),
+                            HomePageCard(
+                              image: AssetImage(
+                                  'assets/images/almuerzo_image.jpg'),
+                              title: 'Lorem ipsum dolor sit amet',
+                              tag: 'imagen_platos_principales',
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              '${DateTime.now().day.toString()} de ${DateFormat.MMMM('es').format(DateTime.now())}',
+                              style: GoogleFonts.comfortaa(
+                                  textStyle: TextStyle(color: Colors.grey),
+                                  fontSize: UiHelper.getWidth(context) / 40),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15.0, vertical: 5),
+                          child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Text(
+                              'PLATO DEL DÍA',
+                              style: GoogleFonts.comfortaa(
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: UiHelper.getWidth(context) / 40),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        PlatoDelDia(),
+                        SizedBox(
+                          height: 50,
+                        ),
+                      ],
                     ),
-                    children: [
-                      CarouselSlider(
-                        initialPage: 3,
-                        viewportFraction: 0.6,
-                        enableInfiniteScroll: false,
-                        height: UiHelper.getOrientation(context) ==
-                                Orientation.portrait
-                            ? UiHelper.getHeight(context) / 2
-                            : UiHelper.getWidth(context) / 2,
-                        enlargeCenterPage: true,
-                        items: <Widget>[
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/entradas_image.jpg'),
-                            title: 'Entradas',
-                            tag: 'imagen_entradas',
-                          ),
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/almuerzo_image.jpg'),
-                            title: 'Raciones',
-                            tag: 'imagen_raciones',
-                          ),
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/almuerzo_image.jpg'),
-                            title: 'Principales',
-                            tag: 'imagen_platos_principales',
-                          ),
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/cocktails_image.jpg'),
-                            title: 'Especialidades',
-                            tag: 'imagen_especialidades',
-                          ),
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/almuerzo_image.jpg'),
-                            title: 'Ensaladas',
-                            tag: 'imagen_ensaladas',
-                          ),
-                          HomePageCard(
-                            image:
-                                AssetImage('assets/images/cocktails_image.jpg'),
-                            title: 'Cocktelería',
-                            tag: 'imagen_cockteles',
-                          ),
-                        ],
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 15.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                              '${DateTime.now().day.toString()} de ${DateFormat.MMMM().format(DateTime.now())}',
-                              style: GoogleFonts.comfortaa(
-                                  textStyle: TextStyle(color: Colors.grey))),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 15.0, vertical: 5),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text('PLATO DEL DÍA',
-                              style: GoogleFonts.comfortaa(
-                                  fontWeight: FontWeight.bold)),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      PlatoDelDia(),
-                      SizedBox(
-                        height: 50,
-                      ),
-                    ],
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         )
@@ -243,12 +269,13 @@ class PlatoDelDia extends StatelessWidget {
             children: <Widget>[
               Text(
                 'Lorem Impsum',
-                style: GoogleFonts.comfortaa(fontSize: 30),
+                style: GoogleFonts.comfortaa(
+                    fontSize: UiHelper.getWidth(context) / 40),
               ),
               Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod fermentum neque at varius. Sed nec ex at est ultricies.',
-                style: GoogleFonts.comfortaa(),
-              ),
+                  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus euismod fermentum neque at varius. Sed nec ex at est ultricies.',
+                  style: GoogleFonts.comfortaa(
+                      fontSize: UiHelper.getWidth(context) / 40)),
             ],
           ),
         )
@@ -265,26 +292,29 @@ class HomePageCard extends StatelessWidget {
     this.image,
     this.title,
     this.tag,
-    Key key,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Hero(
+      key: Key(tag),
       tag: tag,
       child: GestureDetector(
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => ListadoPlatos(
-                  heroImage: image,
-                  heroTag: tag,
-                  title: title,
-                ))),
+        // onTap: () => Navigator.of(context).push(
+        //   MaterialPageRoute(
+        //     builder: (context) => ListadoPlatos(
+        //       heroImage: image,
+        //       heroTag: tag,
+        //       title: title,
+        //     ),
+        //   ),
+        // ),
         child: Stack(
           children: <Widget>[
             Container(
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.symmetric(vertical: 50),
-              width: UiHelper.getWidth(context) / 2,
+              width: UiHelper.getWidth(context) / 1.5,
               decoration: BoxDecoration(
                 image: DecorationImage(image: image, fit: BoxFit.cover),
                 color: Colors.white,
@@ -308,7 +338,7 @@ class HomePageCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.symmetric(vertical: 50),
               //height: 300,
-              width: UiHelper.getWidth(context) / 2,
+              width: UiHelper.getWidth(context) / 1.5,
               decoration: BoxDecoration(
                   borderRadius: BorderRadius.all(Radius.circular(10)),
                   gradient: LinearGradient(
@@ -321,7 +351,7 @@ class HomePageCard extends StatelessWidget {
               padding: const EdgeInsets.all(10),
               margin: const EdgeInsets.symmetric(vertical: 50),
               //height: 300,
-              width: UiHelper.getWidth(context) / 2,
+              width: UiHelper.getWidth(context) / 1.5,
               child: Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
