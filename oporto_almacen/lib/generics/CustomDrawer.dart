@@ -84,7 +84,7 @@ class CustomDrawer extends StatelessWidget {
                     ),
                     DrawerItem(
                       title: '- GIFT CARD -',
-                      route: '/oporto',
+                      route: '/giftcard',
                     ),
                     DrawerItem(
                       title: '- RESERVA -',
@@ -233,7 +233,7 @@ class CustomDrawer extends StatelessWidget {
                     ),
                     DrawerItem(
                       title: '- GIFT CARD -',
-                      route: '/oporto',
+                      route: '/giftcard',
                     ),
                     DrawerItem(
                       title: '- RESERVA -',

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:oporto_almacen/calendario/calendario.dart';
 import 'package:oporto_almacen/carta/carta.dart';
+import 'package:oporto_almacen/giftcard/gift_card.dart';
 import 'package:oporto_almacen/home_page/home_page.dart';
 import 'package:oporto_almacen/oporto/info_oporto.dart';
 
@@ -18,11 +19,11 @@ class MyApp extends StatelessWidget {
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         GlobalWidgetsLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
       ],
       supportedLocales: [
-        const Locale('es'),
-        const Locale('en'),
+        const Locale('es', 'AR'),
+        //const Locale('en'),
         //const Locale.fromSubtags(languageCode: 'es', countryCode: 'AR'),
       ],
       builder: (context, child) {
@@ -41,12 +42,26 @@ class MyApp extends StatelessWidget {
         '/oporto': (context) => InfoOporto(),
         '/carta': (context) => Carta(),
         '/calendario': (context) => Calendario(),
+        '/giftcard': (context) => GiftCard(),
       },
       title: 'Flutter Demo',
       theme: ThemeData(
           canvasColor: Colors.white,
           accentColor: Color(0xFFf05b40),
-          highlightColor: Color(0xFFfff5f1)),
+          highlightColor: Color(0xFFfff5f1),
+          primaryColor: Colors.black,
+          primarySwatch: MaterialColor(0xFF000000, {
+            50: Color.fromRGBO(136, 14, 79, .1),
+            100: Color.fromRGBO(136, 14, 79, .2),
+            200: Color.fromRGBO(136, 14, 79, .3),
+            300: Color.fromRGBO(136, 14, 79, .4),
+            400: Color.fromRGBO(136, 14, 79, .5),
+            500: Color.fromRGBO(136, 14, 79, .6),
+            600: Color.fromRGBO(136, 14, 79, .7),
+            700: Color.fromRGBO(136, 14, 79, .8),
+            800: Color.fromRGBO(136, 14, 79, .9),
+            900: Color.fromRGBO(136, 14, 79, 1),
+          })),
       //home: HomePage(),
     );
   }
